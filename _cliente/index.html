@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Visita2 · NOMBRE</title>
+<meta name="description" content="Visita2 · Agenda de visitas médicas. By Mi Lado C.">
+<meta name="theme-color" content="#3f59f1">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="../icon-192.png">
+<link rel="apple-touch-icon" href="../icon-512.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Visita2">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef0fb;--ink:#161a26;--muted:#737a8c;--blue:#3f59f1;--lime:#e2f59a}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px 20px calc(24px + env(safe-area-inset-bottom))}
+.wrap{width:100%;max-width:400px;text-align:center}
+.icon{width:96px;height:96px;border-radius:24px;box-shadow:0 12px 30px rgba(63,89,241,.25)}
+.wm{display:block;height:34px;margin:22px auto 6px}
+.sub{color:var(--muted);font-weight:600;font-size:14px;margin:0 0 26px}
+.btn{display:block;width:100%;background:var(--blue);color:#fff;text-decoration:none;font-weight:800;font-size:16px;padding:16px;border-radius:16px}
+.card{background:#fff;border-radius:22px;padding:18px 18px 16px;margin-top:18px;text-align:left}
+.card h2{font-size:14px;margin:0 0 10px}
+.card ol{margin:0;padding-left:20px;color:#3d4252;font-size:13.5px;line-height:1.55}
+.tabs{display:flex;gap:6px;margin-bottom:12px}
+.tabs button{flex:1;border:0;border-radius:10px;padding:8px;font:inherit;font-weight:700;font-size:13px;background:var(--bg);color:var(--muted);cursor:pointer}
+.tabs button.on{background:var(--ink);color:#fff}
+[hidden]{display:none!important}
+.loading .card,.loading .btn{display:none}
+.spin{width:28px;height:28px;border:3px solid #d5dbfb;border-top-color:var(--blue);border-radius:50%;margin:8px auto 0;animation:s 0.8s linear infinite}
+@keyframes s{to{transform:rotate(360deg)}}
+footer{margin-top:26px;color:var(--muted);font-size:12px;font-weight:600}
+footer a{color:inherit}
+</style>
+</head>
+<body>
+<div class="wrap" id="wrap">
+  <img class="icon" src="../icon-512.png" alt="Visita2">
+  <img class="wm" src="../wordmark.png" alt="Visita2">
+  <p class="sub" id="sub">Agenda de visitas de NOMBRE</p>
+  <div class="spin" id="spin" hidden></div>
+  <a class="btn" id="go" href="#">Abrir agenda</a>
+
+  <div class="card" id="howto">
+    <h2>Tenela como app en tu celular</h2>
+    <div class="tabs">
+      <button id="tA" class="on">Android</button>
+      <button id="tI">iPhone</button>
+    </div>
+    <ol id="stepsA">
+      <li>Abrí esta página en <b>Chrome</b>.</li>
+      <li>Tocá los <b>3 puntitos ⋮</b> de arriba a la derecha.</li>
+      <li>Elegí <b>“Agregar a la pantalla principal”</b> o <b>“Instalar app”</b>.</li>
+    </ol>
+    <ol id="stepsI" hidden>
+      <li>Abrí esta página en <b>Safari</b>.</li>
+      <li>Tocá <b>Compartir</b> (el cuadradito con la flecha).</li>
+      <li>Elegí <b>“Agregar a pantalla de inicio”</b> y tocá <b>Agregar</b>.</li>
+    </ol>
+  </div>
+  <footer>Visita2 · by <a href="https://www.instagram.com/miladoc__studio/" target="_blank" rel="noopener">Mi Lado C</a></footer>
+</div>
+<script>
+  // CLIENTE NUEVO: 1) copiá esta carpeta con el nombre del cliente (ej: /lucia/)
+  // 2) reemplazá NOMBRE (3 veces en este archivo y 1 en manifest) y pegá su link abajo.
+  var APP_URL = "PEGAR_ACA_EL_LINK_DEL_CLIENTE";
+  document.getElementById('go').href = APP_URL;
+
+  var standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+  var fromIcon = /[?&]app=1/.test(location.search);
+  if (standalone || fromIcon) {
+    document.getElementById('wrap').classList.add('loading');
+    document.getElementById('sub').textContent = 'Abriendo tu agenda…';
+    document.getElementById('spin').hidden = false;
+    setTimeout(function(){ location.replace(APP_URL); }, 350);
+  }
+
+  var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  function show(ios){
+    document.getElementById('stepsA').hidden = ios; document.getElementById('stepsI').hidden = !ios;
+    document.getElementById('tA').classList.toggle('on', !ios); document.getElementById('tI').classList.toggle('on', ios);
+  }
+  document.getElementById('tA').onclick = function(){ show(false); };
+  document.getElementById('tI').onclick = function(){ show(true); };
+  show(isIOS);
+</script>
+</body>
+</html>
